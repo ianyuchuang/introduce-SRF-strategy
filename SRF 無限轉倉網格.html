@@ -1210,7 +1210,8 @@ function rpUpdate(idx) {
   const lp = sub.map((r, i) => [R.xl(i), R.ly(r[9])]); R.ll.setAttribute('points', pts(lp)); R.la.setAttribute('d', `M${lp[0][0]},${R.ly(0)} L${lp.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' L')} L${lp[lp.length - 1][0]},${R.ly(0)} Z`);
   const r = D[idx]; R.ladder.innerHTML = ''; const cx = R.x(idx);
   r[11].forEach((v, j) => { if (v == null) return; const yy = R.y(v); if (yy < R.m.t || yy > R.h - R.m.b) return; S('line', { x1: cx, x2: cx + 12, y1: yy, y2: yy, class: 'ln ' + (j < 4 ? 'k-srf' : 'k-low') }, R.ladder); });
-  if (r[14]) r[14].forEach(v => { const yy = R.y(v); S('line', { x1: cx, x2: cx + 12, y1: yy, y2: yy, class: 'ln thin k-dn' }, R.ladder); });
+  /* bear sell levels only exist for held upper layers (grid.py _refresh); none held = no sell orders, and the stored low stops updating */
+  if (r[14] && r[5] > 0) r[14].forEach(v => { const yy = R.y(v); S('line', { x1: cx, x2: cx + 12, y1: yy, y2: yy, class: 'ln thin k-dn' }, R.ladder); });
   S('circle', { cx, cy: R.y(r[1]), r: 4, class: 'f-acc' }, R.ladder);
   $('#rp-dt').textContent = r[0]; const held = r[4] + r[5] + r[6], lev = r[9];
   let st = ['只有底倉', '']; if (r[10]) st = ['跌破模式', 'warn']; else if (r[5] + r[6] > 0) st = ['持有加碼層', 'hold']; else if (r[1] >= r[3] - 1e-6) st = ['創高・H 上移', 'hold'];
